@@ -11,6 +11,7 @@
 
     <modules>
         <module>issues/brace-init-issue</module>
+        <module>issues/mockwebserver-shutdown-issue</module>
         <!-- add more modules here -->
         <!-- <module>issues/some-other-issue</module> -->
     </modules>

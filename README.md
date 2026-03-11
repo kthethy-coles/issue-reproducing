@@ -30,6 +30,29 @@ To easily create a new module for reproducing an issue, follow these steps:
        
        <artifactId>my-new-issue</artifactId>
        <packaging>jar</packaging>
+
+       <build>
+           <plugins>
+               <plugin>
+                   <groupId>org.openrewrite.maven</groupId>
+                   <artifactId>rewrite-maven-plugin</artifactId>
+                   <version>6.32.0</version>
+                   <configuration>
+                       <exportDatatables>true</exportDatatables>
+                       <activeRecipes>
+                           <recipe>org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0</recipe>
+                       </activeRecipes>
+                   </configuration>
+                   <dependencies>
+                       <dependency>
+                           <groupId>org.openrewrite.recipe</groupId>
+                           <artifactId>rewrite-spring</artifactId>
+                           <version>6.26.0</version>
+                       </dependency>
+                   </dependencies>
+               </plugin>
+           </plugins>
+       </build>
    </project>
    ```
 
@@ -47,12 +70,12 @@ To easily create a new module for reproducing an issue, follow these steps:
 
 ## Running OpenRewrite
 
-You can run OpenRewrite from the root directory to apply recipes across all modules, or you can run it from within a specific module's directory to only affect that module:
+You can run OpenRewrite by targeting specific modules with `-pl`. This is the recommended pattern to keep isolated dependency graphs and ensure only the expected recipes run:
 
 ```bash
-# Run dry-run to see what would change
-mvn rewrite:dryRun
+# Run dry-run for a specific issue
+mvn -pl issues/mockwebserver-shutdown-issue rewrite:dryRun
 
-# Run rewrite to apply the changes
-mvn rewrite:run
+# Apply the changes for a specific issue
+mvn -pl issues/mockwebserver-shutdown-issue rewrite:run
 ```
